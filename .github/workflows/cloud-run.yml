@@ -9,7 +9,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
   RUN_REGION: us-central1
-  SERVICE_NAME: helloworld-python
+  SERVICE_NAME: helloworld-python1
 
 jobs:
   setup-build-deploy:
