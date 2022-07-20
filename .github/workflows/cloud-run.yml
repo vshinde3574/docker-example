@@ -29,6 +29,9 @@ jobs:
       
     - name: Docker Configure
       run: gcloud auth configure-docker gcr.io
+      
+    - name: Maven package
+      run: mvn package
 
     # Build and push image to Google Container Registry
     - name: Build
