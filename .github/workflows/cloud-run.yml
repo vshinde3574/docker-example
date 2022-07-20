@@ -32,6 +32,14 @@ jobs:
       
     - name: Maven package
       run: mvn -B package --file pom.xml
+      
+    - name: List files in dir
+      run: ls -a
+      
+    - name: List target files
+      run: |
+        cd target
+        ls -a
 
     # Build and push image to Google Container Registry
     - name: Build
