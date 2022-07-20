@@ -4,12 +4,12 @@ name: Build and Deploy to Cloud Run
 on:
   push:
     branches:
-    - Main
+    - master
 
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
   RUN_REGION: us-central1
-  SERVICE_NAME: docker-spring-boot
+  SERVICE_NAME: helloworld-python
 
 jobs:
   setup-build-deploy:
@@ -18,10 +18,10 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: google-github-actions/setup-gcloud@v0
+      uses: actions/checkout@v2
 
     # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@main
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
         version: '290.0.1'
         service_account_key: ${{ secrets.RUN_SA_KEY }}
