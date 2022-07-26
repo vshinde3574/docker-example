@@ -4,7 +4,7 @@ name: Build and Deploy to Cloud Run
 on:
   push:
     branches:
-    - Main
+      - Main
 
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
@@ -17,42 +17,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    # Setup gcloud CLI
-    - uses: google-github-actions/setup-gcloud@v0
-      with:
-        version: '290.0.1'
-        service_account_key: ${{ secrets.RUN_SA_KEY }}
-        project_id: ${{ secrets.RUN_PROJECT }}
-      
-    - name: Docker Configure
-      run: gcloud auth configure-docker gcr.io
-      
-    - name: Maven package
-      run: mvn -B package --file pom.xml
-      
-    - name: List files in dir
-      run: ls -a
-      
-    - name: List target files
-      run: |
-        cd target
-        ls -a
+      # Setup gcloud CLI
+      - uses: google-github-actions/setup-gcloud@v0
+        with:
+          version: '290.0.1'
+          service_account_key: ${{ secrets.RUN_SA_KEY }}
+          project_id: ${{ secrets.RUN_PROJECT }}
 
-    # Build and push image to Google Container Registry
-    - name: Build
-      run: |-
-        gcloud builds submit \
-          --quiet \
-          --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
-    # Deploy image to Cloud Run
-    - name: Deploy
-      run: |-
-        gcloud run deploy "$SERVICE_NAME" \
-          --quiet \
-          --region "$RUN_REGION" \
-          --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
-          --platform "managed" \
-          --allow-unauthenticated
+      - name: Maven package
+        run: mvn package
+
+      - name: deploy cloud function
+        uses: google-github-actions/deploy-cloud-function@main
+        with:
+          name: HttpCloudFunction
+          runtime: java11
+          project_id: ${{ secrets.RUN_PROJECT }}
+          entry_point: functions.HttpCloudFunction
+
+#    - name: Docker Configure
+#      run: gcloud auth configure-docker gcr.io
+#
+#    # Build and push image to Google Container Registry
+#    - name: Build
+#      run: |-
+#        gcloud builds submit \
+#          --quiet \
+#          --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+#    # Deploy image to Cloud Run
+#    - name: Deploy
+#      run: |-
+#        gcloud run deploy "$SERVICE_NAME" \
+#          --quiet \
+#          --region "$RUN_REGION" \
+#          --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+#          --platform "managed" \
+#          --allow-unauthenticated
