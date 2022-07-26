@@ -31,7 +31,7 @@ jobs:
         run: mvn package
 
       - name: deploy cloud function
-        uses: google-github-actions/deploy-cloud-function@v0
+        uses: google-github-actions/deploy-cloud-functions@v0.1.0
         with:
           name: HttpCloudFunction
           runtime: java11
