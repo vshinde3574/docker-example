@@ -37,7 +37,7 @@ jobs:
           name: HttpCloudFunction
           runtime: java11
           project_id: ${{ secrets.RUN_PROJECT }}
-          entry_point: functions.HttpCloudFunction
+          entry_point: com.dockerexample.dockerexample.HttpCloudFunction
 
 #    - name: Docker Configure
 #      run: gcloud auth configure-docker gcr.io
