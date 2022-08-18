@@ -7,6 +7,6 @@ import com.google.cloud.functions.HttpResponse;
 public class HttpCloudFunction implements HttpFunction {
     @Override
     public void service(HttpRequest request, HttpResponse response) throws Exception {
-        response.getWriter().write(request.getQueryParameters().values().toString());
+        freturn response.getWriter().write(request.getQueryParameters().values().toString());
     }
 }
